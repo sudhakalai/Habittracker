@@ -16,6 +16,7 @@ public class WalkingDbHelper extends SQLiteOpenHelper {
     public static String DATABASE_NAME ="WalkingTracker.db";
     public static int DATABASE_VERSION = 1;
 
+
     //Constructor declaration
     public WalkingDbHelper(Context context){
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -41,4 +42,6 @@ public class WalkingDbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
+
+
 }

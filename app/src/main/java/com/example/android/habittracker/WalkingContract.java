@@ -8,6 +8,8 @@ import android.provider.BaseColumns;
 
 public final class WalkingContract {
 
+    private WalkingContract(){}
+
     //Column values
 
     public static abstract class WalkingEntry implements BaseColumns {

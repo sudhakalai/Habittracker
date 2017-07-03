@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
 
     //global variable declaration
     private WalkingDbHelper mDbHelper;
+    private Cursor c;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +21,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         insertWalkingData();
-        readWalkingData();
+        c = readWalkingData();
+
+        c.moveToNext();
+
+        //Log message is printed to the logcat
+        Log.v("MainActivity", "Cursor contents:\n" + c.getInt(c.getColumnIndex(WalkingEntry._ID))
+                + " - " + c.getString(c.getColumnIndex(WalkingEntry.COLUMN_WALKING_DATE))
+                + " - " + c.getString(c.getColumnIndex(WalkingEntry.COLUMN_WALKING_DISTANCE))
+                + " - " + c.getString(c.getColumnIndex(WalkingEntry.COLUMN_WALKING_TIME))
+                + " - " + c.getString(c.getColumnIndex(WalkingEntry.COLUMN_CALORIES)));
+
+        c.close();
     }
 
     // Inserts a value to the walking table
@@ -47,7 +59,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Reads the line inserted by the insertWalkingData method
-    public void readWalkingData() {
+    public Cursor readWalkingData() {
+
         mDbHelper = new WalkingDbHelper(this);
 
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
@@ -55,17 +68,12 @@ public class MainActivity extends AppCompatActivity {
         String[] projection = {WalkingEntry._ID, WalkingEntry.COLUMN_WALKING_DATE,
                 WalkingEntry.COLUMN_WALKING_DISTANCE, WalkingEntry.COLUMN_WALKING_TIME, WalkingEntry.COLUMN_CALORIES};
 
-        Cursor c = db.query(WalkingEntry.TABLE_NAME, projection, null, null, null, null, null);
+        c = db.query(WalkingEntry.TABLE_NAME, projection, null, null, null, null, null);
 
-        c.moveToNext();
+        return c;
 
-        //Log message is printed to the logcat
-        Log.v("MainActivity", "Cursor contents:\n" + c.getInt(c.getColumnIndex(WalkingEntry._ID))
-                + " - " + c.getString(c.getColumnIndex(WalkingEntry.COLUMN_WALKING_DATE))
-                + " - " + c.getString(c.getColumnIndex(WalkingEntry.COLUMN_WALKING_DISTANCE))
-                + " - " + c.getString(c.getColumnIndex(WalkingEntry.COLUMN_WALKING_TIME))
-                + " - " + c.getString(c.getColumnIndex(WalkingEntry.COLUMN_CALORIES)));
 
-        c.close();
     }
+
+
 }
